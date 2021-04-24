@@ -61,11 +61,12 @@ int Parser::ParseObject(int i, Value& val)
         case TokenType::Bool:
         {
             if (status == State::Colon) {
-                auto v = tokens[i].value;//.substr(1, tokens[i].value.length() - 2);
+                auto v = tokens[i].value;
                 val[key] = (v == "true" ? true : false);
                 i++;
             }
         }
+        break;
 		case TokenType::Colon:
 		{
 			status = State::Colon;

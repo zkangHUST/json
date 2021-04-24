@@ -192,12 +192,18 @@ static void baseTest(const std::string& str)
     LOG(val.prettyString());
 }
 
+void test8()
+{
+//    std::string str = "{\"companys\":[\"Microsoft\", \"Google\", \"Amazon\", \"Zoom\"]}";
+    std::string str = "{\"age\":50,\"married\":false,\"subjects\":[\"math\",\"english\"],\"name\":\"Amy\"}";
+    baseTest(str);
+}
 void test10()
 {
     std::vector<std::string> vec;
-    std::string s;
-    while(cin>>s) {
-        vec.push_back(s);
+    std::string line;
+    while (getline(cin, line)) {
+        vec.push_back(line);
     }
     for (auto it:vec) {
         baseTest(it);

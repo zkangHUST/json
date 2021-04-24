@@ -132,31 +132,28 @@ Value& Value::operator[](index i)
 std::string blank(int tabNums, bool r = true)
 {
     assert(tabNums >= 0);
-    if (r) {
-        return "\n" + std::string(4 * tabNums, ' ');
-    } else {
-        return std::string(4 * tabNums, ' ');
-    }
+    return std::string(4 * tabNums, ' ');
 }
 std::string Value::prettyString() const
 {
     auto rawText = String();
-    std::string ret;
+    std::string ret = "\n";
     auto level = 0;
-//    auto i = 1;
     for (auto c : rawText) {
         if (c == '{' || c == '[') {
-            ret += blank(level);
             ret += c;
             level += 1;
+            ret += "\n";
             ret += blank(level);
         } else if (c == '}' || c == ']') {
             level -= 1;
+            ret += "\n";
             ret += blank(level);
             ret += c;
         }
         else if (c == ',') {
             ret += c;
+            ret += "\n";
             ret += blank(level);
         } else {
             ret += c;

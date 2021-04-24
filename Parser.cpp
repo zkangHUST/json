@@ -58,6 +58,14 @@ int Parser::ParseObject(int i, Value& val)
 			}
 		}
 		break;
+        case TokenType::Bool:
+        {
+            if (status == State::Colon) {
+                auto v = tokens[i].value;//.substr(1, tokens[i].value.length() - 2);
+                val[key] = (v == "true" ? true : false);
+                i++;
+            }
+        }
 		case TokenType::Colon:
 		{
 			status = State::Colon;
@@ -94,8 +102,11 @@ int Parser::ParseArray(int i, Value& val)
             if (status == State::None) {
                 status = State::Array_B;
                 i++;
-            } else if (status == State::Colon) {
-                //
+            } else if (status == State::Comma || status == State::Array_B) {
+                Value tmp;
+                i = ParseArray(i, tmp);
+                val.append(tmp);
+                status = State::Array_E;
             }
 		}
         break;
@@ -114,6 +125,22 @@ int Parser::ParseArray(int i, Value& val)
                 }
                 i++;
             }
+        break;
+        case TokenType::Num:
+            {
+                auto v = strtoll(tokens[i].value.c_str(), NULL, 10);
+                val.append(v);
+                i++;
+            }
+        break;
+        case TokenType::Bool:
+        {
+            if (status == State::Comma || status == State::Array_B) {
+                auto v = tokens[i].value;
+                val.append((v == "true" ? true : false));
+                i++;
+            }
+        }
         break;
         case TokenType::Comma:
             {
@@ -209,3 +236,6 @@ bool Parser::Tokenize()
 	}
 	return true;
 }
+
+
+
